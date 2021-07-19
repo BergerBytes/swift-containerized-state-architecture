@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Debug",
+        "repositoryURL": "https://github.com/BergerBytes/swift-debug.git",
+        "state": {
+          "branch": null,
+          "revision": "7c3b7426343b8e93029b249f31b85d3ca7195c73",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
