@@ -1,7 +1,7 @@
 import Foundation
 import Debug
 
-public class StateStore<State: StoreState> {
+open class StateStore<State: StoreState> {
     private var subscriptions = NSHashTable<StateSubscription<State>>.weakObjects()
     public var otherStoresSubscriptions = [String: AnyObject]()
     internal lazy var stateTransactionQueue = DispatchQueue(label: "\(type(of: self)).StateTransactionQueue")

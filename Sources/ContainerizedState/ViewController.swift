@@ -2,7 +2,7 @@
 
 import UIKit
 
-public class ViewController<State: ViewState, Store: ViewStore<State>, Delegate>: UIViewController, StatefulView {
+open class ViewController<State: ViewState, Store: ViewStore<State>, Delegate>: UIViewController, StatefulView {
     private var viewStore: Store
     public var delegate: Delegate?
 
@@ -26,7 +26,7 @@ public class ViewController<State: ViewState, Store: ViewStore<State>, Delegate>
         fatalError("ViewController does not support init?(coder:)")
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
@@ -40,27 +40,27 @@ public class ViewController<State: ViewState, Store: ViewStore<State>, Delegate>
         }
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewStore.viewControllerWillAppear()
     }
     
-    public override func viewDidAppear(_ animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewStore.viewControllerDidAppear()
     }
     
-    public override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewStore.viewControllerWillDisappear()
     }
     
-    public override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         viewStore.viewControllerDidDisappear()
     }
     
-    public func render(state: State, from distinctState: State.StateType?) {
+    open func render(state: State, from distinctState: State.StateType?) {
         self.state = state
     }
 }

@@ -1,10 +1,10 @@
 import Foundation
 
 /// A base type defining an error that is equatable.
-struct EquatableError: Equatable {
-    let error: LocalizedError
+public struct EquatableError: Equatable {
+    public let error: LocalizedError
     
-    static func == (lhs: EquatableError, rhs: EquatableError) -> Bool {
+    public static func == (lhs: EquatableError, rhs: EquatableError) -> Bool {
         return lhs.error == rhs.error
     }
 }

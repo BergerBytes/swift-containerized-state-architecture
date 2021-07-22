@@ -4,12 +4,12 @@ import Foundation
 import SwiftUI
 
 @available(iOS 13.0, *)
-class HostingController<State, Store: ViewStore<State>, Content: StateView>: UIHostingController<Content>, StatefulView where Content.StateType == State {
+open class HostingController<State, Store: ViewStore<State>, Content: StateView>: UIHostingController<Content>, StatefulView where Content.StateType == State {
     private let viewStore: Store
     private let delegate: Content.Delegate
-    private(set) var renderPolicy: RenderPolicy
+    public private(set) var renderPolicy: RenderPolicy
 
-    required init(viewStore: Store) {
+    public required init(viewStore: Store) {
         self.viewStore = viewStore
         self.renderPolicy = .notPossible(.viewNotReady)
         
@@ -26,31 +26,31 @@ class HostingController<State, Store: ViewStore<State>, Content: StateView>: UIH
         self.viewStore.viewControllerDidLoad()
     }
     
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("HostingController does not support init?(coder:)")
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewStore.viewControllerWillAppear()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewStore.viewControllerDidAppear()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewStore.viewControllerWillDisappear()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         viewStore.viewControllerDidDisappear()
     }
     
-    func render(state: State, from distinctState: State.StateType?) {
+    public func render(state: State, from distinctState: State.StateType?) {
         rootView = Content(state: state, delegate: delegate)
     }
 }
