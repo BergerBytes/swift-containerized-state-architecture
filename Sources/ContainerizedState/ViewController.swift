@@ -60,7 +60,7 @@ open class ViewController<State: ViewState, Store: ViewStore<State>, Delegate>: 
         viewStore.viewControllerDidDisappear()
     }
     
-    open func render(state: State, from distinctState: State.StateType?) {
+    open func render(state: State, from distinctState: State.State?) {
         self.state = state
     }
 }

@@ -10,7 +10,7 @@ public protocol StatefulView: AnyObject {
 
     /// Render should be used to update the view with the new state.
     /// If the state has changed it's base case, distinctState will be provided to help transition between states.
-    func render(state: State, from distinctState: State.StateType?)
+    func render(state: State, from distinctState: State.State?)
     var renderPolicy: RenderPolicy { get }
 }
 
@@ -35,7 +35,7 @@ extension StatefulView where Self: UIView {
 // MARK: - AnyStatefulView
 /// Weak container and type erasure for StatefulViews
 class AnyStatefulView<State: ViewState>: StatefulView {
-    private let _render: (State, State.StateType?) -> Void
+    private let _render: (State, State.State?) -> Void
     private let _renderPolicy: () -> RenderPolicy
     let identifier: String
 
@@ -51,7 +51,7 @@ class AnyStatefulView<State: ViewState>: StatefulView {
         identifier = String(describing: statefulView)
     }
 
-    func render(state: State, from distinctState: State.StateType?) {
+    func render(state: State, from distinctState: State.State?) {
         guard renderPolicy.canBeRendered else {
             fatalError("view cannot be rendered")
         }

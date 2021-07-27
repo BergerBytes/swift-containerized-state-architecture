@@ -4,9 +4,9 @@ import Foundation
 public protocol ViewState: StoreState {}
 
 /// State provided by a Store
-public protocol StoreState: Equatable where StateType: EnumState {
-    associatedtype StateType
-    var current: StateType { get set }
+public protocol StoreState: Equatable where State: EnumState {
+    associatedtype State
+    var current: State { get set }
 }
 
 extension StoreState {

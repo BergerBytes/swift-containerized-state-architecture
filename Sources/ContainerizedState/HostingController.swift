@@ -50,7 +50,7 @@ open class HostingController<State, Store: ViewStore<State>, Content: StateView>
         viewStore.viewControllerDidDisappear()
     }
     
-    public func render(state: State, from distinctState: State.StateType?) {
+    public func render(state: State, from distinctState: State.State?) {
         rootView = Content(state: state, delegate: delegate)
     }
 }
