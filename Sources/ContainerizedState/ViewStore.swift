@@ -2,7 +2,7 @@ import Foundation
 import Debug
 
 /// A state store designed to provide a view state to a ViewController and additional stateful views.
-public class ViewStore<State: ViewState>: StateStore<State> {
+open class ViewStore<State: ViewState>: StateStore<State> {
     private var views = Set<AnyStatefulView<State>>()
     
     public override var state: State {
