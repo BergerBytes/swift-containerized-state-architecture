@@ -57,7 +57,15 @@ extension StateStore {
 
         otherStoresSubscriptions[store.storeIdentifier] = nil
     }
+    
+    public func unsubscribe(from storeIdentifier: String) {
+        if otherStoresSubscriptions[storeIdentifier] == nil {
+            assertionFailure("Trying to unsubscribe from a not subscribed store.")
+        }
 
+        otherStoresSubscriptions[storeIdentifier] = nil
+    }
+    
     public func subscribe(_ closure: @escaping (State) -> Void) -> StateSubscription<State> {
         let subscription = StateSubscription(closure)
         subscriptions.add(subscription)
