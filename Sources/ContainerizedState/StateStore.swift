@@ -41,13 +41,26 @@ open class StateStore<State: StoreState> {
 extension StateStore {
     // Helper method to subscribe to other stores that automatically retains the subscription tokens
     // so children stores can easily subscribe to other store changes without hassle.
-    public func subscribe<T>(to store: StateStore<T>, handler: @escaping (T) -> Void) {
-        if otherStoresSubscriptions[store.storeIdentifier] != nil {
-            assertionFailure("Trying to subscribe to an already subscribed store.")
-            return
+    /// - Parameters:
+    ///   - store: The store to subscribe to.
+    ///   - weak: Should the subscription be a weak reference. Default is `True`.
+    ///   - handler: Callback to respond to state changes.
+    public func subscribe<T>(to store: StateStore<T>, weak: Bool = true, handler: @escaping (T) -> Void) {
+        // If the subscription is not nil, check if it is a WeakRef and that the value is nil,
+        // otherwise there is an attempt to resubscribe to a store and that is not allowed.
+        if let subscription = otherStoresSubscriptions[store.storeIdentifier] {
+            guard
+                let weakSubscription = subscription as? WeakRef,
+                weakSubscription.value == nil
+            else {
+                assertionFailure("Trying to subscribe to an already subscribed store.")
+                return
+            }
         }
         
-        otherStoresSubscriptions[store.storeIdentifier] = store.subscribe(handler)
+        otherStoresSubscriptions[store.storeIdentifier] = weak
+            ? WeakRef(store.subscribe(handler))
+            : store.subscribe(handler)
     }
 
     public func unsubscribe<T>(from store: StateStore<T>) {
@@ -70,5 +83,16 @@ extension StateStore {
 extension StateStore: CustomDebugStringConvertible {
     public var debugDescription: String {
         return String(describing: type(of: self))
+    }
+}
+
+// MARK: - WeakRef
+extension StateStore {
+    public final class WeakRef {
+        weak var value: AnyObject?
+        
+        init(_ value: AnyObject?) {
+            self.value = value
+        }
     }
 }
