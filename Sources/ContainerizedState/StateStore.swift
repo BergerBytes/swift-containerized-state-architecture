@@ -16,7 +16,8 @@ open class StateStore<State: StoreState> {
         }
     }
 
-    public var storeIdentifier: String {
+    /// String identifying a unique store. Override if needed to differentiate stores of the same type. Default: `String(describing: self)`
+    open var storeIdentifier: String {
         return String(describing: self)
     }
 
