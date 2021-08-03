@@ -4,13 +4,15 @@ import Debug
 open class StateStore<State: StoreState> {
     private var subscriptions = NSHashTable<StateSubscription<State>>.weakObjects()
     public var otherStoresSubscriptions = [String: AnyObject]()
-    internal lazy var stateTransactionQueue = DispatchQueue(label: "\(type(of: self)).StateTransactionQueue")
+    internal lazy var stateTransactionQueue = DispatchQueue(
+        label: "\(type(of: self)).\(storeIdentifier).StateTransactionQueue.\(UUID().uuidString)"
+    )
 
     // The current state of the store.
     // This should be protected and changed only by subclasses.
     public var state: State {
         didSet(oldState) {
-            stateTransactionQueue.sync { [weak self, state] in
+            stateTransactionQueue.sync { [weak self, state, oldState] in
                 self?.stateDidChange(oldState: oldState, newState: state)
             }
         }

@@ -8,8 +8,8 @@ open class ViewStore<State: ViewState>: StateStore<State> {
     public override var state: State {
         didSet(oldState) {
             // Update every tracked stateful view with the updated state.
-            stateTransactionQueue.sync { [weak self, state, oldState] in
-                self?.views.forEach {
+            stateTransactionQueue.sync { [weak self, state, oldState, views] in
+                views.forEach {
                     self?.stateDidChange(oldState: oldState, newState: state, view: $0)
                 }
             }
