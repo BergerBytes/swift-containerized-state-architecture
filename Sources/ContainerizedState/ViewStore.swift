@@ -57,12 +57,12 @@ open class ViewStore<State: ViewState>: StateStore<State> {
         }
     }
     
-    func viewControllerDidLoad() {}
+    open func viewControllerDidLoad() {}
     
-    func viewControllerWillAppear() {}
-    func viewControllerDidAppear() {}
-    func viewControllerWillDisappear() {}
-    func viewControllerDidDisappear() {}
+    open func viewControllerWillAppear() {}
+    open func viewControllerDidAppear() {}
+    open func viewControllerWillDisappear() {}
+    open func viewControllerDidDisappear() {}
 }
 
 // MARK: - Subscription
