@@ -38,11 +38,11 @@ open class ViewStore<State: ViewState>: StateStore<State> {
                             : nil)
         }
         
-        if Thread.isMainThread {
-            renderBlock()
-        } else {
+//        if Thread.isMainThread {
+//            renderBlock()
+//        } else {
             DispatchQueue.main.async(execute: renderBlock)
-        }
+//        }
     }
     
     private func handleNotPossibleRender(error: RenderPolicy.RenderError, view: AnyStatefulView<State>) {
