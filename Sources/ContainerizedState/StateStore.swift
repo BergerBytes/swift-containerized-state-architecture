@@ -12,7 +12,7 @@ open class StateStore<State: StoreState> {
     // This should be protected and changed only by subclasses.
     public var state: State {
         didSet(oldState) {
-            stateTransactionQueue.sync { [weak self, state, oldState] in
+            stateTransactionQueue.async { [weak self, state, oldState] in
                 self?.stateDidChange(oldState: oldState, newState: state)
             }
         }
@@ -34,8 +34,10 @@ open class StateStore<State: StoreState> {
             return
         }
 
-        subscriptions.allObjects.forEach {
-            $0.fire(state)
+        DispatchQueue.main.async { [subscriptions, state] in
+            subscriptions.allObjects.forEach {
+                $0.fire(state)
+            }
         }
     }
 }

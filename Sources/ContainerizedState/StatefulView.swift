@@ -19,14 +19,14 @@ public protocol StatefulView: AnyObject {
 // MARK: - StatefulView: UIViewController
 extension StatefulView where Self: UIViewController {
     public var renderPolicy: RenderPolicy {
-        return isViewLoaded ? .possible : .notPossible(.viewNotReady)
+        isViewLoaded ? .possible : .notPossible(.viewNotReady)
     }
 }
 
 // MARK: - StatefulView: UIView
 extension StatefulView where Self: UIView {
     public var renderPolicy: RenderPolicy {
-        return superview != nil ? .possible : .notPossible(.viewNotReady)
+        superview != nil ? .possible : .notPossible(.viewNotReady)
     }
 }
 

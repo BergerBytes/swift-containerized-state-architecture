@@ -8,7 +8,7 @@ open class ViewStore<State: ViewState>: StateStore<State> {
     public override var state: State {
         didSet(oldState) {
             // Update every tracked stateful view with the updated state.
-            stateTransactionQueue.sync { [weak self, state, oldState, views] in
+            stateTransactionQueue.async { [weak self, state, oldState, views] in
                 views.forEach {
                     self?.stateDidChange(oldState: oldState, newState: state, view: $0)
                 }
@@ -17,11 +17,19 @@ open class ViewStore<State: ViewState>: StateStore<State> {
     }
     
     private func stateDidChange(oldState: State, newState: State, view: AnyStatefulView<State>, force: Bool = false) {
-        switch view.renderPolicy {
-        case .possible:
-            handlePossibleRender(newState: newState, oldState: oldState, view: view, force: force)
-        case .notPossible(let renderError):
-            handleNotPossibleRender(error: renderError, view: view)
+        let handleChange = { [weak self, oldState, newState, view, force] in
+            switch view.renderPolicy {
+            case .possible:
+                self?.handlePossibleRender(newState: newState, oldState: oldState, view: view, force: force)
+            case .notPossible(let renderError):
+                self?.handleNotPossibleRender(error: renderError, view: view)
+            }
+        }
+        
+        if Thread.current == stateTransactionQueue || !Thread.isMainThread {
+            DispatchQueue.main.sync(execute: handleChange)
+        } else {
+            handleChange()
         }
     }
     
