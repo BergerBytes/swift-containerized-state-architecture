@@ -1,3 +1,4 @@
+import Debug
 import Foundation
 #if os(iOS)
 import UIKit
@@ -53,7 +54,8 @@ class AnyStatefulView<State: ViewState>: StatefulView {
 
     func render(state: State, from distinctState: State.State?) {
         guard renderPolicy.canBeRendered else {
-            fatalError("view cannot be rendered")
+            Debug.assertionFailure("view [\(identifier)] cannot be rendered. \(renderPolicy)")
+            return
         }
         _render(state, distinctState)
     }
