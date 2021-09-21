@@ -46,7 +46,7 @@ open class StateStore<State: StoreState> {
 extension StateStore {
     // Helper method to subscribe to other stores that automatically retains the subscription tokens
     // so children stores can easily subscribe to other store changes without hassle.
-    public func subscribe<T>(to store: StateStore<T>, handler: @escaping (T) -> Void) {
+    open func subscribe<T>(to store: StateStore<T>, handler: @escaping (T) -> Void) {
         if otherStoresSubscriptions[store.storeIdentifier] != nil {
             assertionFailure("Trying to subscribe to an already subscribed store.")
             return
@@ -55,7 +55,7 @@ extension StateStore {
         otherStoresSubscriptions[store.storeIdentifier] = store.subscribe(handler)
     }
 
-    public func unsubscribe<T>(from store: StateStore<T>) {
+    open func unsubscribe<T>(from store: StateStore<T>) {
         if otherStoresSubscriptions[store.storeIdentifier] == nil {
             assertionFailure("Trying to unsubscribe from a not subscribed store.")
         }
@@ -63,7 +63,7 @@ extension StateStore {
         otherStoresSubscriptions[store.storeIdentifier] = nil
     }
     
-    public func unsubscribe(from storeIdentifier: String) {
+    open func unsubscribe(from storeIdentifier: String) {
         if otherStoresSubscriptions[storeIdentifier] == nil {
             assertionFailure("Trying to unsubscribe from a not subscribed store.")
         }
@@ -71,7 +71,7 @@ extension StateStore {
         otherStoresSubscriptions[storeIdentifier] = nil
     }
     
-    public func subscribe(_ closure: @escaping (State) -> Void) -> StateSubscription<State> {
+    open func subscribe(_ closure: @escaping (State) -> Void) -> StateSubscription<State> {
         let subscription = StateSubscription(closure)
         subscriptions.add(subscription)
         subscription.fire(state)
