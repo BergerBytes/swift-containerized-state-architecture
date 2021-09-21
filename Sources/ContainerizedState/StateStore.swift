@@ -40,10 +40,9 @@ open class StateStore<State: StoreState> {
             }
         }
     }
-}
-
-// MARK: - Subscription
-extension StateStore {
+    
+    // MARK: - Subscription
+    
     // Helper method to subscribe to other stores that automatically retains the subscription tokens
     // so children stores can easily subscribe to other store changes without hassle.
     open func subscribe<T>(to store: StateStore<T>, handler: @escaping (T) -> Void) {
@@ -80,6 +79,7 @@ extension StateStore {
 }
 
 // MARK: - CustomDebugStringConvertible
+
 extension StateStore: CustomDebugStringConvertible {
     public var debugDescription: String {
         return String(describing: type(of: self))
