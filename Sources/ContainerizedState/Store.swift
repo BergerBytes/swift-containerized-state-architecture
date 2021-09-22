@@ -1,7 +1,7 @@
 import Foundation
 import Debug
 
-open class StateStore<State: StoreState> {
+open class Store<State: StoreState> {
     private var subscriptions = NSHashTable<StateSubscription<State>>.weakObjects()
     public var otherStoresSubscriptions = [String: AnyObject]()
     internal lazy var stateTransactionQueue = DispatchQueue(
@@ -45,7 +45,7 @@ open class StateStore<State: StoreState> {
     
     // Helper method to subscribe to other stores that automatically retains the subscription tokens
     // so children stores can easily subscribe to other store changes without hassle.
-    open func subscribe<T>(to store: StateStore<T>, handler: @escaping (T) -> Void) {
+    open func subscribe<T>(to store: Store<T>, handler: @escaping (T) -> Void) {
         if otherStoresSubscriptions[store.storeIdentifier] != nil {
             assertionFailure("Trying to subscribe to an already subscribed store.")
             return
@@ -54,7 +54,7 @@ open class StateStore<State: StoreState> {
         otherStoresSubscriptions[store.storeIdentifier] = store.subscribe(handler)
     }
 
-    open func unsubscribe<T>(from store: StateStore<T>) {
+    open func unsubscribe<T>(from store: Store<T>) {
         if otherStoresSubscriptions[store.storeIdentifier] == nil {
             assertionFailure("Trying to unsubscribe from a not subscribed store.")
         }
@@ -80,7 +80,7 @@ open class StateStore<State: StoreState> {
 
 // MARK: - CustomDebugStringConvertible
 
-extension StateStore: CustomDebugStringConvertible {
+extension Store: CustomDebugStringConvertible {
     public var debugDescription: String {
         return String(describing: type(of: self))
     }

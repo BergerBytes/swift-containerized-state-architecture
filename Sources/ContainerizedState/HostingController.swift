@@ -4,7 +4,7 @@ import Foundation
 import SwiftUI
 
 @available(iOS 13.0, *)
-open class HostingController<State, Store: ViewStore<State>, Content: StateView>: UIHostingController<Content>, StatefulView where Content.StateType == State {
+open class HostingController<State, Store: ViewControllerStore<State>, Content: StateView>: UIHostingController<Content>, StatefulView where Content.StateType == State {
     private let viewStore: Store
     private let delegate: Content.Delegate
     public private(set) var renderPolicy: RenderPolicy

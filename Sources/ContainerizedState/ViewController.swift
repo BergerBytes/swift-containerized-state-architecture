@@ -2,7 +2,7 @@
 
 import UIKit
 
-open class ViewController<State: ViewState, Store: ViewStore<State>, Delegate>: UIViewController, StatefulView {
+open class ViewController<State: ViewState, Store: ViewControllerStore<State>, Delegate>: UIViewController, StatefulView {
     private var viewStore: Store
     public var delegate: Delegate?
 

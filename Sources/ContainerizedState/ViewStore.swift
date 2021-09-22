@@ -1,8 +1,18 @@
 import Foundation
 import Debug
 
+/// Specialized ViewStore with ViewController lifecycle events.
+/// Used with ``ViewController``
+open class ViewControllerStore<State: ViewState>: ViewStore<State> {
+    open func viewControllerDidLoad() {}
+    open func viewControllerWillAppear() {}
+    open func viewControllerDidAppear() {}
+    open func viewControllerWillDisappear() {}
+    open func viewControllerDidDisappear() {}
+}
+
 /// A state store designed to provide a view state to a ViewController and additional stateful views.
-open class ViewStore<State: ViewState>: StateStore<State> {
+open class ViewStore<State: ViewState>: Store<State> {
     private var views = Set<AnyStatefulView<State>>()
     
     public override var state: State {
@@ -60,16 +70,10 @@ open class ViewStore<State: ViewState>: StateStore<State> {
             views.remove(view)
         }
     }
-    
-    open func viewControllerDidLoad() {}
-    
-    open func viewControllerWillAppear() {}
-    open func viewControllerDidAppear() {}
-    open func viewControllerWillDisappear() {}
-    open func viewControllerDidDisappear() {}
 }
 
 // MARK: - Subscription
+
 extension ViewStore {
     public func subscribe<View: StatefulView>(from view: View) where View.State == State {
         let anyView = AnyStatefulView(view)
