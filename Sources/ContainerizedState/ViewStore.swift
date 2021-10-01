@@ -70,6 +70,15 @@ open class ViewStore<State: ViewState>: Store<State> {
             views.remove(view)
         }
     }
+    
+    public override func forcePushState() {
+        // Update every tracked stateful view with the updated state.
+        stateTransactionQueue.async { [weak self, state, views] in
+            views.forEach {
+                self?.stateDidChange(oldState: state, newState: state, view: $0, force: true)
+            }
+        }
+    }
 }
 
 // MARK: - Subscription

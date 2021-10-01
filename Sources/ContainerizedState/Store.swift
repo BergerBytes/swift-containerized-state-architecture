@@ -26,6 +26,14 @@ open class Store<State: StoreState> {
     public init(initialState: State) {
         state = initialState
     }
+    
+    /// Force push the current state object to all subscribers.
+    /// This should be not be needed for most use cases and should only be called by Store subclasses.
+    public func forcePushState() {
+        subscriptions.allObjects.forEach {
+            $0.fire(state)
+        }
+    }
 
     private func stateDidChange(oldState: State, newState: State) {
         // Prevent stores from invoking updates if the state has not changed.
