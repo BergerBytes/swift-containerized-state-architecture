@@ -9,7 +9,7 @@ public enum RenderPolicy {
         case viewDeallocated
     }
 
-    var canBeRendered: Bool {
+    public var isPossible: Bool {
         switch self {
         case .possible:
             return true

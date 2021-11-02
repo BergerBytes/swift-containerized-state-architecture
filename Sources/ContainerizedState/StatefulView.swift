@@ -53,7 +53,7 @@ class AnyStatefulView<State: ViewState>: StatefulView {
     }
 
     func render(state: State, from distinctState: State.State?) {
-        guard renderPolicy.canBeRendered else {
+        guard renderPolicy.isPossible else {
             Debug.assertionFailure("view [\(identifier)] cannot be rendered. \(renderPolicy)")
             return
         }
