@@ -22,7 +22,7 @@ open class HostingController<State, Store: ViewControllerStore<State>, Content: 
         // SwiftUI does not need time to "load a view" like a UIViewController since the view is declarative.
         // The rendering can happen right away.
         self.renderPolicy = .possible
-        self.viewStore += self
+        try! self.viewStore += self
         self.viewStore.viewControllerDidLoad()
     }
     

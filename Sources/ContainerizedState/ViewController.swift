@@ -35,7 +35,7 @@ open class ViewController<State: ViewState, Store: ViewControllerStore<State>, D
         // Queue the subscription to ensure it happens after the current stack completes.
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.viewStore += self
+            try! self.viewStore += self
             self.viewStore.viewControllerDidLoad()
         }
     }

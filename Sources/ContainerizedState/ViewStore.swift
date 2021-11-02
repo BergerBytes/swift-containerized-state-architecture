@@ -84,26 +84,34 @@ open class ViewStore<State: ViewState>: Store<State> {
 // MARK: - Subscription
 
 extension ViewStore {
-    public func subscribe<View: StatefulView>(from view: View) where View.State == State {
+    enum SubscriptionError: Error {
+        /// The view is already subscribed to this view store.
+        case viewIsAlreadySubscribed
+        
+        /// The view is not subscribed to this view store.
+        case viewIsNotSubscribed
+    }
+    
+    public func subscribe<View: StatefulView>(from view: View) throws where View.State == State {
         let anyView = AnyStatefulView(view)
         if views.insert(anyView).inserted {
             stateDidChange(oldState: state, newState: state, view: anyView, force: true)
         } else {
-            assertionFailure("Trying to subscribe from an already subscribed view.")
+            throw SubscriptionError.viewIsAlreadySubscribed
         }
     }
     
-    public func unsubscribe<View: StatefulView>(from view: View) where View.State == State {
+    public func unsubscribe<View: StatefulView>(from view: View) throws where View.State == State {
         if views.remove(AnyStatefulView(view)) == nil {
-            assertionFailure("Trying to unsubscribe from a not subscribed view.")
+            throw SubscriptionError.viewIsNotSubscribed
         }
     }
 }
 
-public func += <State, View: StatefulView>(left: ViewStore<State>, right: View) where View.State == State {
-    left.subscribe(from: right)
+public func += <State, View: StatefulView>(left: ViewStore<State>, right: View) throws where View.State == State {
+    try left.subscribe(from: right)
 }
 
-public func -= <State, View: StatefulView>(left: ViewStore<State>, right: View) where View.State == State {
-    left.unsubscribe(from: right)
+public func -= <State, View: StatefulView>(left: ViewStore<State>, right: View) throws where View.State == State {
+    try left.unsubscribe(from: right)
 }
