@@ -19,7 +19,7 @@ let package = Package(
         .package(
             name: "Debug",
             url: "https://github.com/BergerBytes/swift-debug.git",
-            from: "1.0.0"
+            "1.4.0"..<"1.5.0"
         ),
     ],
     targets: [

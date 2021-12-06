@@ -45,7 +45,7 @@ open class ViewStore<State: ViewState>: Store<State> {
     
     private func handlePossibleRender(newState: State, oldState: State, view: AnyStatefulView<State>, force: Bool) {
         if force == false && newState == oldState {
-            Debug.log("Skip rendering with the same state: \(newState)", level: .low)
+            Debug.log(level: .low, "Skip rendering with the same state: \(newState)")
             return
         }
         
@@ -63,10 +63,10 @@ open class ViewStore<State: ViewState>: Store<State> {
         switch error {
         case .viewNotReady:
             assertionFailure(
-                Debug.log("[\(view)] view not ready to be rendered", level: .error)
+                Debug.log(level: .error, "[\(view)] view not ready to be rendered")
             )
         case .viewDeallocated:
-            Debug.log("[\(view.identifier)] view deallocated", level: .warning)
+            Debug.log(level: .warning, "[\(view.identifier)] view deallocated")
             views.remove(view)
         }
     }

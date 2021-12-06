@@ -38,7 +38,7 @@ open class Store<State: StoreState> {
     private func stateDidChange(oldState: State, newState: State) {
         // Prevent stores from invoking updates if the state has not changed.
         guard oldState != newState else {
-            Debug.log("[\(debugDescription)] Skip forwarding same state: \(newState)", level: .low)
+            Debug.log(level: .low, "[\(debugDescription)] Skip forwarding same state: \(newState)")
             return
         }
 
