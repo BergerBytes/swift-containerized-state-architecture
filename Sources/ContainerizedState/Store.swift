@@ -38,10 +38,16 @@ open class Store<State: StoreState> {
     private func stateDidChange(oldState: State, newState: State) {
         // Prevent stores from invoking updates if the state has not changed.
         guard oldState != newState else {
-            Debug.log(level: .low, "[\(debugDescription)] Skip forwarding same state: \(newState)")
+            Debug.log(level: .containerizedState, "[\(debugDescription)] Skip forwarding same state: \(newState.current.name)")
             return
         }
 
+        if oldState.current.name != newState.current.name {
+            Debug.log(level: .containerizedState, "[\(debugDescription)] State did change from: \(oldState.current.name) to: \(newState.current.name)")
+        } else {
+            Debug.log(level: .containerizedState, "[\(debugDescription)] State data changed. \(newState.current.name)")
+        }
+        
         DispatchQueue.main.async { [subscriptions, state] in
             subscriptions.allObjects.forEach {
                 $0.fire(state)

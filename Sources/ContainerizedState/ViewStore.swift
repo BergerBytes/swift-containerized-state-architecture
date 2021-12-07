@@ -45,8 +45,14 @@ open class ViewStore<State: ViewState>: Store<State> {
     
     private func handlePossibleRender(newState: State, oldState: State, view: AnyStatefulView<State>, force: Bool) {
         if force == false && newState == oldState {
-            Debug.log(level: .low, "Skip rendering with the same state: \(newState)")
+            Debug.log(level: .containerizedState, "[\(debugDescription)] Skip forwarding same state: \(newState.current.name)")
             return
+        }
+
+        if oldState.current.name != newState.current.name {
+            Debug.log(level: .containerizedState, "[\(debugDescription)] State did change from: \(oldState.current.name) to: \(newState.current.name)")
+        } else {
+            Debug.log(level: .containerizedState, "[\(debugDescription)] State data changed. \(newState.current.name)")
         }
         
         let renderBlock = { [view, newState, oldState] in
