@@ -1,3 +1,1 @@
-# ContainerizedState
-
-A description of this package.
+# Moved to https://github.com/BergerBytes/StateKit
